@@ -69,6 +69,7 @@ public class DemoConfig extends JFinalConfig {
 		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
 		me.add("/blog", BlogController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
 		me.add("/facecompare", FaceCompareController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/facecomparetest", FaceCompareController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
 	}
 	
 	public void configEngine(Engine me) {
@@ -81,14 +82,14 @@ public class DemoConfig extends JFinalConfig {
 	 */
 	public void configPlugin(Plugins me) {
 		// 配置 druid 数据库连接池插件
-		DruidPlugin druidPlugin = new DruidPlugin(p.get("jdbcUrl"), p.get("user"), p.get("password").trim());
-		me.add(druidPlugin);
-		
-		// 配置ActiveRecord插件
-		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
-		// 所有映射在 MappingKit 中自动化搞定
-		_MappingKit.mapping(arp);
-		me.add(arp);
+//		DruidPlugin druidPlugin = new DruidPlugin(p.get("jdbcUrl"), p.get("user"), p.get("password").trim());
+//		me.add(druidPlugin);
+//		
+//		// 配置ActiveRecord插件
+//		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
+//		// 所有映射在 MappingKit 中自动化搞定
+//		_MappingKit.mapping(arp);
+//		me.add(arp);
 	}
 	
 	public static DruidPlugin createDruidPlugin() {

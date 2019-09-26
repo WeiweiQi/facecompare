@@ -17,9 +17,9 @@ import com.jfinal.kit.LogKit;
 
 public class ImageUtil {
 	
-	public static final String APP_ID = "17343924";
-    public static final String API_KEY = "QUPxMLg9AeLvADkWNQqIhGcS";
-    public static final String SECRET_KEY = "vSBckg2BGKWX7wGWQb58kjlYMTSK72fK";
+	public static final String APP_ID = "";
+    public static final String API_KEY = "";
+    public static final String SECRET_KEY = "";
 	
 	private static final String UNKNOWN_IMAGE_BASE64 = "unknown";
 	

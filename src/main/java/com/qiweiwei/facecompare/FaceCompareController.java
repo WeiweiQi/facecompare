@@ -9,7 +9,11 @@ public class FaceCompareController extends Controller{
 	FaceCompareService service;
 	
 	public void index() {
-		render("xxx.html");
+		render("index.html");
+	}
+	
+	public void previewcut() {
+		render("preview/index.html");
 	}
 
 }

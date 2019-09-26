@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>寻找最像明星脸</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+  <!-- <script src="https://cdn.bootcss.com/vConsole/2.2.1/vconsole.min.js"></script> -->
+  <link href="https://cdn.bootcss.com/minireset.css/0.0.2/minireset.min.css" rel="stylesheet">
+  
+  <style>
+    .header {
+      background-color: #fafafa;
+      border-bottom: 1px #f0f0f0 solid;
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .content{
+      padding: 0 20px;
+    }
+    h1 {
+      padding-top: 25px;
+      font-size: 28px;
+      color: #333333;
+      letter-spacing: 0;
+      font-weight: 600;
+    }
+    .subTitle{
+      font-size: 16px;
+      color: #333333;
+      letter-spacing: 0;
+      line-height: 42px;
+    }
+    .button{
+      height: 46px; 
+      line-height: 46px;
+      font-size: 17px;
+      text-align: center;
+      display: block;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    .button-submit{
+      background-color: #1679DB;
+      border: 1px #1679DB solid;
+      color: #fff;
+    }
+    .button-action{
+      background-color: #ffffff;
+      border: 1px #1679DB solid;
+      color: #1679DB;
+    }
+    .imageList{
+      min-height: 200px;
+      padding: 10px 0;
+      overflow: hidden;
+    }
+    .imageUpload{
+      visibility: hidden;
+    }
+    .imageBox{
+      float: left;
+      position: relative;
+      width: 31.5%;
+      margin: 0 2% 2% 0;
+    }
+    .imageBox:nth-child(3n) {
+      margin-right: 0;
+    }
+    .image{
+      width: 100%;
+      padding-bottom: 100%;
+      height: 0;
+      z-index: -1;
+    }
+    .imageBoxImg{
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 2px;
+    }
+    .close{
+      position: absolute;
+      top: -5px; right: -5px; z-index: 2;
+      border-radius: 100%;
+      line-height: 999em;
+      width: 25px; height: 25px;
+      background: url('./close.png') no-repeat center center;
+    }
+    .loading{
+      position: fixed;
+      z-index: 9;
+      left: 0; top: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none
+    }
+    .loadingBg{
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 100vw;
+      height: 100vh;
+    }
+    .loadingGif{
+      width: 20%;
+      position: fixed;
+      top: 30%; left: 50%;
+      margin-left: -10%;
+    }
+    .successImg{
+      width: 95px; height: auto;
+      margin: 200px auto 30px; display: block;
+    }
+    .successText{
+      font-size: 20px; color: #333;
+      text-align: center;
+    }
+    .closePage{
+      background-color: #ffffff;
+      border: 1px #1679DB solid;
+      color: #1679DB;
+      margin-top: 120px;
+    }
+  </style>
+  <style>
+  	.gr__localhost {
+  		height:100%;
+  	}
+  
+  	body {
+  		height: 100%;
+  	}
+  	
+  	#content {
+  		border: 1px solid black;
+  		height: 100%;
+  		bottom: 5%;
+  	}
+  	
+  	#imageList {
+  		height: 50%;
+  	}
+  	
+  	#submit {
+  		position:fixed;
+  		bottom: 25%;
+  		left: 5%;
+  		right: 5%;
+  		width: 90%;
+  	}
+  	
+  	#camera {
+  		position:fixed;
+  		bottom: 15%;
+  		left: 5%;
+  		right: 5%;
+  		width: 90%;
+  	}
+  	
+  	#photo {
+  		position:fixed;
+  		bottom: 5%;
+  		left: 5%;
+  		right: 5%;
+  		width: 90%;
+  	}
+  	
+  	.imageBox {
+  		width: 100%;
+  		height:100%;
+  	}
+  </style>
+  <script src="pictureCut.js"></script>
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+
+<body>
+  <div class="content" id="content">
+    <h1 style="text-align:center;">请上传照片</h1>
+    <!-- <h3 class="subTitle"></h3> -->
+    <div class="imageList" id="imageList"></div>
+    <input class="imageUpload" id="imageUploadCamera" type="file" accept="image/*" capture="camera">
+    <input class="imageUpload" id="imageUploadPhoto" type="file" >
+    <button id="submit" class="button button-submit">确认上传</button>
+    <button id="camera" class="button button-action">拍照</button>
+    <button id="photo" class="button button-action">相册</button>
+  </div>
+  <div class="loading">
+    <div class="loadingBg"></div>
+    <img class="loadingGif" src="./loading.gif">
+  </div>
+  <script>
+    // 图片存储空间
+    var ImageFilesList = []
+    // 配置
+    var GLOBAL_CONFIG = {
+      "MAX_FILE_SIZE": 5242880,       // 图片上传的最大尺寸
+      "DEFAULT_MAX_FILE_LENGTH": 1            // 图片上传的最大数量
+    }
+
+    // 辅助函数
+    // 生成要插入的HTML， 需要base64
+    var createAppendHTML = function (base64, id) {
+      return '<div class="imageBox ' + id + '"><div class="image" id="main"></div><img class="imageBoxImg" src="' + base64 +
+        '"><div class="close">X</div></div>'
+    }
+    // 文件名生成md5码
+    var createSign = function (name) {
+      return md5(name)
+    }
+    // 已有图片数量
+    var imageLength = function () {
+      return $('.imageBox').length
+    }
+    // 生成base64
+    var convertImgToBase64 = function (name) {
+      var result = ''
+      var reader = new FileReader();
+      var AllowImgFileSize = GLOBAL_CONFIG.MAX_FILE_SIZE;
+      var file = $("#" + name + "")[0].files[0];
+      var imgUrlBase64;
+      if (file) {
+        imgUrlBase64 = reader.readAsDataURL(file);
+        reader.onload = function (e) {
+          console.log('原始大小：',reader.result.length)
+          if (reader.result.length < 2*1024*1024) {
+            var HTML = createAppendHTML(reader.result, createSign(file.name))
+            ImageFilesList.push(file)
+            $('#imageList').append(HTML)
+          } else {
+            canvasDataURL(reader.result, {
+              quality: 0.5,
+              width: 3000
+            }, function(base64Codes){
+              console.log('压缩大小：', base64Codes.length)
+              if (AllowImgFileSize != 0 && AllowImgFileSize < base64Codes.length) {
+                alert('上传失败，请上传不大于'+ AllowImgFileSize/1024/1024 +'M的图片！')
+              } else {
+                var HTML = createAppendHTML(base64Codes, createSign(file.name))
+                ImageFilesList.push(dataURLtoFile(base64Codes, file.name))
+                $('#imageList').append(HTML)
+              }
+            })
+          }
+        }
+      }
+    }
+    // 将base64转换为文件
+    function dataURLtoFile(dataurl, filename) { 
+      var arr = dataurl.split(','), 
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+      while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, {type:mime});
+    }
+    function convertBase64UrlToBlob(urlData){ 
+      var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte  
+      //处理异常,将ascii码小于0的转换为大于0  
+      var ab = new ArrayBuffer(bytes.length);  
+      var ia = new Uint8Array(ab);  
+      for (var i = 0; i < bytes.length; i++) {  
+          ia[i] = bytes.charCodeAt(i);  
+      }  
+      return new Blob( [ab] , {type : 'image/png'});  
+    }  
+    // 解析URL参数
+    var GetRequest = function () {
+      var url = location.search;
+      var theRequest = new Object();
+      if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("&");
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+        }
+      }
+      return theRequest;
+    }
+    function canvasDataURL(path, obj, callback){
+      var img = new Image();
+      img.src = path;
+      img.onload = function(){
+        var that = this;
+        // 默认按比例压缩
+        var w = that.width,
+            h = that.height,
+            scale = w / h;
+        w = obj.width || w;
+        h = (w / scale) || h;
+        var quality = 0.92;  // 默认图片质量为0.92
+        //生成canvas
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        // 创建属性节点
+        var anw = document.createAttribute("width");
+        anw.nodeValue = w;
+        var anh = document.createAttribute("height");
+        anh.nodeValue = h;
+        canvas.setAttributeNode(anw);
+        canvas.setAttributeNode(anh);
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(that, 0, 0, w, h);
+        // 图像质量
+        if(obj.quality && obj.quality <= 1 && obj.quality > 0){
+            quality = obj.quality;
+        }
+        // quality值越小，所绘制出的图像越模糊
+        var base64 = canvas.toDataURL('image/jpeg', quality);
+        // 回调函数返回base64的值
+        callback(base64);
+      }
+    }
+    // 主逻辑
+    var main = function () {
+      // 检查
+      var client = GetRequest()['client'] || ''
+      var param = GetRequest()['param'] ? JSON.parse(GetRequest()['param']) : {}
+      var maxUpload = param['maxupload'] ? param['maxupload'][0] : GLOBAL_CONFIG.DEFAULT_MAX_FILE_LENGTH
+      if (!client) { 
+    	  //alert('缺少客户端ID(client)，无法进行上传操作') 
+   	  }
+      
+      // init
+      $('.subTitle').text('一次最多可传' + maxUpload + '张')
+      
+      // 上传控件变更后，追加图片
+      $('#imageUploadCamera').change(function () {
+        convertImgToBase64('imageUploadCamera')
+      })
+      $('#imageUploadPhoto').change(function () {
+        var url = $(this)[0].value
+        var format = url.slice(url.lastIndexOf('.') + 1).toLocaleLowerCase()
+        if (format == 'jpeg' || format == 'jpg' || format == 'png' || format == 'bmp' || format == 'gif' ) {
+          convertImgToBase64('imageUploadPhoto')
+        } else if (format == 'mp4' || format == '3gp' || format == 'avi' || format == 'mov') {
+          ImageFilesList.push($(this)[0].files[0])
+          $('#imageList').append(createAppendHTML('./video.jpg', createSign($(this)[0].files[0].name)))
+        } else {
+          alert('不支持的格式，请确认后重新上传')
+        }
+      })
+      // 删除选择的图片或视频
+      $('.imageList').on('click', '.close', function () {
+        var removeClassName = $(this).parent('.imageBox').attr('class').replace('imageBox', '').trim()
+        ImageFilesList.forEach(function(item, index){
+          if (createSign(item.name) === removeClassName) {
+            ImageFilesList.splice(index, 1)
+          }
+        })
+        $(this).parent('.imageBox').remove()
+      })
+      // 关闭按钮
+      $('body').on('click', '.closePage' ,function() {
+        window.close();
+        WeixinJSBridge.call('closeWindow');
+      })
+      // 触发拍照按钮
+      $('#camera').click(function () {
+        if (imageLength() >= maxUpload) return;
+        $('#imageUploadCamera').click()
+      })
+      // 触发相册按钮
+      $('#photo').click(function () {
+        if (imageLength() >= maxUpload) return;
+        $('#imageUploadPhoto').click()
+      })
+      // 触发确认上传按钮
+      $('#submit').click(function () {
+        if (ImageFilesList.length === 0) return
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+        for (var i = 0, f; f = ImageFilesList[i]; i++) {
+          formData.append('files', f);
+        }
+        $('.loading').show()
+        xhr.open( 'POST', 
+                  '/auto/UploadCenter/receiveData.json?action=remote&' + location.search.slice(1) + '',
+                  true);
+        xhr.send(formData);
+        xhr.onload = function (e) {
+          $('.loading').hide()
+          if (this.status === 200 
+              && JSON.parse(this.responseText).success 
+              && JSON.parse(this.responseText).code === '000001') 
+          {
+            $('#content').html(`
+              <img class='successImg' src='./success.png'/>
+              <p class='successText'>上传成功</p>
+              <button type="button" class='button closePage'>关闭</button>
+            `)
+          } else {
+            alert( JSON.parse(this.responseText).message ? JSON.parse(this.responseText).message : '上传失败，请稍后再试' )
+          }
+        }
+      })
+    }
+    
+    // 执行主体方法
+    main()
+  </script>
+</body>
+
+</html>

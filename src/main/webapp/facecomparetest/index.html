@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>picture cut&preview</title>
+    <style>
+        body{background-color: #333;}
+        #box{position:absolute;top:100px;left:200px;width:400px;height:600px}
+        #img1{opacity: 0.3;position: absolute;top:0;left: 0;}
+        #img2{position: absolute;top:0;left: 0;clip:rect(100px,300px,300px,100px);}
+        #main{position:absolute;border:1px solid #fff;width: 200px;height: 200px;left:100px;top:100px;}
+        .minDiv{position: absolute;width:8px;height:8px;background:#fff;}
+        .up{left:50%;margin-left: -4px;top:-4px;}
+        .down{left:50%;top:100%;margin-left: -4px;margin-top:-4px;}
+        .left-up{margin-left: -4px;top:-4px;}
+        .left{margin-left: -4px;top:50%;margin-top: -4px;}
+        .left-down{margin-left: -4px;top:100%;margin-top: -4px;}
+        .right-up{left:100%;margin-left: -4px;top:-4px;}
+        .right{left:100%;top:50%;margin-left: -4px;margin-top: -4px;}
+        .right-down{left:100%;top:100%;margin-left: -4px;margin-top: -4px;}
+        #preview{position:absolute;width:400px;height:400px;left:500px;}
+        #preview img{position:absolute;}
+    </style>
+    <script src="pictureCut.js"></script>
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="jquery-ui-1.10.4.custom.min.js"></script>
+</head>
+<body>
+<div id="box">
+    <img src="image.jpg" width="400px" height="400px" id="img1"/>
+    <img src="image.jpg" width="400px" height="400px" id="img2"/>
+    <div id="main">
+        <div id="left-up" class="minDiv left-up"></div>
+        <div id="up" class="minDiv up"></div>
+        <div id="right-up" class="minDiv right-up"></div>
+        <div id="right" class="minDiv right"></div>
+        <div id="right-down" class="minDiv right-down"></div>
+        <div id="down" class="minDiv down"></div>
+        <div id="left-down" class="minDiv left-down"></div>
+        <div id="left" class="minDiv left"></div>
+    </div>
+    <div id="preview">
+        <img src="image.jpg" width="400px" height="400px" id="img3"/>
+    </div>
+</div>
+
+</body>
+</html>
