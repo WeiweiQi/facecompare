@@ -175,26 +175,47 @@
   		width: 100%;
   		height:100%;
   	}
+  	
+  /* 	#main{
+  		width: 100%;
+  		height:100%;
+  	} */
+  	
+  	/* #img1{opacity: 0.3;position: absolute;top:0;left: 0;}
+        #img2{position: absolute;top:0;left: 0;clip:rect(100px,300px,300px,100px);}
+        #main{position:absolute;border:1px solid #fff;width: 200px;height: 200px;left:100px;top:100px;}
+        .minDiv{position: absolute;width:8px;height:8px;background:#fff;}
+        .up{left:50%;margin-left: -4px;top:-4px;}
+        .down{left:50%;top:100%;margin-left: -4px;margin-top:-4px;}
+        .left-up{margin-left: -4px;top:-4px;}
+        .left{margin-left: -4px;top:50%;margin-top: -4px;}
+        .left-down{margin-left: -4px;top:100%;margin-top: -4px;}
+        .right-up{left:100%;margin-left: -4px;top:-4px;}
+        .right{left:100%;top:50%;margin-left: -4px;margin-top: -4px;}
+        .right-down{left:100%;top:100%;margin-left: -4px;margin-top: -4px;} */
   </style>
-  <script src="pictureCut.js"></script>
-    <script src="jquery-3.1.0.min.js"></script>
-    <script src="jquery-ui-1.10.4.custom.min.js"></script>
+  
 </head>
 
 <body>
   <div class="content" id="content">
     <h1 style="text-align:center;">请上传照片</h1>
     <!-- <h3 class="subTitle"></h3> -->
-    <div class="imageList" id="imageList"></div>
+    
+    <div class="imageList" id="imageList">
+    	
+    </div>
     <input class="imageUpload" id="imageUploadCamera" type="file" accept="image/*" capture="camera">
     <input class="imageUpload" id="imageUploadPhoto" type="file" >
+    
     <button id="submit" class="button button-submit">确认上传</button>
     <button id="camera" class="button button-action">拍照</button>
     <button id="photo" class="button button-action">相册</button>
+    <input value="#" style="display:none;" id="base64code"/>
   </div>
   <div class="loading">
     <div class="loadingBg"></div>
-    <img class="loadingGif" src="./loading.gif">
+    <img class="loadingGif" src="./assets/css/loader.gif">
   </div>
   <script>
     // 图片存储空间
@@ -208,8 +229,27 @@
     // 辅助函数
     // 生成要插入的HTML， 需要base64
     var createAppendHTML = function (base64, id) {
-      return '<div class="imageBox ' + id + '"><div class="image" id="main"></div><img class="imageBoxImg" src="' + base64 +
-        '"><div class="close">X</div></div>'
+      document.getElementById("base64code").value = base64;
+    	
+      return '<div class="imageBox ' + id + '"><div class="image"></div><img class="imageBoxImg" src="' + base64 +
+        '"><div class="close">X</div></div> ' + 
+        '<img style="display:none;" src="#" width="400px" height="400px" id="img1"/>' + 
+    	'<img style="display:none;" src="#" width="400px" height="400px" id="img2"/>' + 
+    	'<div id="main">' + 
+	    '	<div id="left-up" class="minDiv left-up"></div> ' + 
+	    '   <div id="up" class="minDiv up"></div>' + 
+	    '   <div id="right-up" class="minDiv right-up"></div>' + 
+	    '  <div id="right" class="minDiv right"></div>' + 
+	    '  <div id="right-down" class="minDiv right-down"></div>' + 
+	    '  <div id="down" class="minDiv down"></div>' + 
+	    '  <div id="left-down" class="minDiv left-down"></div>' + 
+	    '  <div id="left" class="minDiv left"></div>' + 
+    	'</div>' + 
+    	'<div id="preview">' + 
+        '	<img  style="display:none;" src="#" width="400px" height="400px" id="img3"/></div>' + 
+    	'<script src=\'pictureCut.js\'><\/script>' + 
+    	'<script src=\'jquery-3.1.0.min.js\'><\/script> ' + 
+    	'<script src=\'jquery-ui-1.10.4.custom.min.js\'><\/script>';
     }
     // 文件名生成md5码
     var createSign = function (name) {
@@ -377,15 +417,17 @@
       $('#submit').click(function () {
         if (ImageFilesList.length === 0) return
         var xhr = new XMLHttpRequest();
-        var formData = new FormData();
-        for (var i = 0, f; f = ImageFilesList[i]; i++) {
-          formData.append('files', f);
-        }
+        //var formData = new FormData();
+        //for (var i = 0, f; f = ImageFilesList[i]; i++) {
+        //  formData.append('files', f);
+        //}
         $('.loading').show()
+        //提交给后台base64编码
+        //xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
         xhr.open( 'POST', 
-                  '/auto/UploadCenter/receiveData.json?action=remote&' + location.search.slice(1) + '',
+                  '/facecompare/uploadimage?action=remote&' + location.search.slice(1) + '&base64code=' + document.getElementById("base64code").value + '' ,
                   true);
-        xhr.send(formData);
+        xhr.send();
         xhr.onload = function (e) {
           $('.loading').hide()
           if (this.status === 200 
