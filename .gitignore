@@ -8,3 +8,4 @@
 *.class
 target/test-classes/detectface/Test.class
 target/classes/com/qiweiwei/facecompare/FaceCompareController.class
+log/jfinal_demo_for_maven.log
