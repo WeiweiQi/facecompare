@@ -23,5 +23,10 @@ public class FaceCompareController extends Controller{
 		base64 = base64.replaceAll(" ", "+");
 		renderJson(new Record().set("success", "1").set("code", "000001").set("base64", base64));
 	}
+	
+	public void initStars() {
+		service.initStars();
+		renderText("成功");
+	}
 
 }

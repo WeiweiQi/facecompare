@@ -1,5 +1,5 @@
 # config
-jdbcUrl = jdbc:mysql://localhost/jfinal_demo?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
-user = root
-password = 123456
+jdbcUrl = jdbc:mysql://118.24.248.78:13306/jfinal_demo?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
+user = qiweiwei
+password = 19901218
 devMode = true
