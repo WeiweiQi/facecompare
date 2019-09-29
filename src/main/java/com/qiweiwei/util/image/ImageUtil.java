@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -17,9 +18,9 @@ import com.jfinal.kit.LogKit;
 
 public class ImageUtil {
 	
-	public static final String APP_ID = "";
-    public static final String API_KEY = "";
-    public static final String SECRET_KEY = "";
+	public static final String APP_ID = "17343924";
+    public static final String API_KEY = "QUPxMLg9AeLvADkWNQqIhGcS";
+    public static final String SECRET_KEY = "vSBckg2BGKWX7wGWQb58kjlYMTSK72fK";
 	
 	private static final String UNKNOWN_IMAGE_BASE64 = "unknown";
 	
@@ -71,6 +72,14 @@ public class ImageUtil {
 	    requests.add(req2);
 	    return getAipFace().match(requests);
 	}
+
+	public static JSONObject getFacePointByBase64(String base64) {
+		HashMap<String, String> options = new HashMap<String, String>();
+		options.put("face_field", "beauty,gender");
+		return getAipFace().detect(base64, "BASE64", options);
+	}
+	
+	
 	
 	
 

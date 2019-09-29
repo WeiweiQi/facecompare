@@ -25,8 +25,13 @@ public class FaceCompareController extends Controller{
 	}
 	
 	public void initStars() {
-		service.initStars();
+		//service.initStars();
 		renderText("成功");
+	}
+	
+	public void updateBeautyPoint() {
+		service.initFacePoint();
+		renderText("ok");
 	}
 
 }

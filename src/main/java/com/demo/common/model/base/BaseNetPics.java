@@ -41,6 +41,20 @@ public abstract class BaseNetPics<M extends BaseNetPics<M>> extends Model<M> imp
 		return getStr("base64");
 	}
 
+	/**
+	 * 性别,0-女，1-男
+	 */
+	public void setGender(java.lang.Integer gender) {
+		set("gender", gender);
+	}
+	
+	/**
+	 * 性别,0-女，1-男
+	 */
+	public java.lang.Integer getGender() {
+		return getInt("gender");
+	}
+
 	public void setBeautifulpoint(java.lang.Integer beautifulpoint) {
 		set("beautifulpoint", beautifulpoint);
 	}
@@ -49,12 +63,28 @@ public abstract class BaseNetPics<M extends BaseNetPics<M>> extends Model<M> imp
 		return getInt("beautifulpoint");
 	}
 
+	public void setBeauty(java.lang.String beauty) {
+		set("beauty", beauty);
+	}
+	
+	public java.lang.String getBeauty() {
+		return getStr("beauty");
+	}
+
 	public void setState(java.lang.Boolean state) {
 		set("state", state);
 	}
 	
 	public java.lang.Boolean getState() {
 		return get("state");
+	}
+
+	public void setCreatetime(java.util.Date createtime) {
+		set("createtime", createtime);
+	}
+	
+	public java.util.Date getCreatetime() {
+		return get("createtime");
 	}
 
 }
