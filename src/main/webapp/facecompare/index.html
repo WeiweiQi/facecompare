@@ -445,10 +445,16 @@
                   true);
         xhr.send();
         xhr.onload = function (e) {
-          $('.loading').hide()
+          $('.loading').hide();
+          
+          var responseText = this.responseText;
+          var success = JSON.parse(responseText).success;
+          var code = JSON.parse(responseText).code;
+          var message = responseText.message
+          
           if (this.status === 200 
-              && JSON.parse(this.responseText).success 
-              && JSON.parse(this.responseText).code === '000001') 
+              && success
+              && code === '000001') 
           {
             $('#content').html(`
               <!-- <img class='successImg' src='./success.png'/> -->
@@ -458,7 +464,7 @@
               <button type="button" class='button closePage'>关闭</button>
             `)
           } else {
-            alert( JSON.parse(this.responseText).message ? JSON.parse(this.responseText).message : '上传失败，请稍后再试' )
+            alert( message ? message : '上传失败，请稍后再试' )
           }
         }
       })
