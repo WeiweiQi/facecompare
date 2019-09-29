@@ -83,7 +83,7 @@
       position: absolute;
       left: 0; top: 0;
       width: 100%;
-      height: 100%;
+      height: 80%;
       border-radius: 2px;
     }
     .close{
@@ -138,7 +138,7 @@
   	}
   	
   	#content {
-  		border: 1px solid black;
+  		/*border: 1px solid black;*/
   		height: 100%;
   		bottom: 5%;
   	}
@@ -169,6 +169,21 @@
   		left: 5%;
   		right: 5%;
   		width: 90%;
+  	}
+  	
+  	#successImg {
+  		position:relative;
+  		bottom: 5%;
+  		left: 5%;
+  		right: 5%;
+  		top:5%;
+  		width: 90%;
+  		margin-top: 3em;
+  	}
+  	
+  	#successText {
+  		margin: 0 auto;
+  		margin-top: 2em;
   	}
   	
   	.imageBox {
@@ -400,8 +415,9 @@
       })
       // 关闭按钮
       $('body').on('click', '.closePage' ,function() {
-        window.close();
-        WeixinJSBridge.call('closeWindow');
+    	  location.reload();
+        //window.close();
+        //WeixinJSBridge.call('closeWindow');
       })
       // 触发拍照按钮
       $('#camera').click(function () {
@@ -435,8 +451,10 @@
               && JSON.parse(this.responseText).code === '000001') 
           {
             $('#content').html(`
-              <img class='successImg' src='./success.png'/>
-              <p class='successText'>上传成功</p>
+              <!-- <img class='successImg' src='./success.png'/> -->
+              <img id='successImg' class='sucessImg' src='` + JSON.parse(this.responseText).base64 + `' 
+              <br>
+              <p id='successText' class='successText'>最像的明星</p>
               <button type="button" class='button closePage'>关闭</button>
             `)
           } else {
