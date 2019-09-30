@@ -9,6 +9,8 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.core.JFinal;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -16,6 +18,8 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.qiweiwei.facecompare.FaceCompareController;
+import com.qiweiwei.util.quartz.QuartzDynamicPlugin;
+import com.qiweiwei.util.quartz.QuartzPlugin;
 
 /**
  * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
@@ -90,6 +94,13 @@ public class DemoConfig extends JFinalConfig {
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
 		me.add(arp);
+		
+		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		me.add(quartzPlugin);
+		
+		//动态定时任务插件
+		QuartzDynamicPlugin quartzDynamicPlugin = new QuartzDynamicPlugin();
+		me.add(quartzDynamicPlugin);
 	}
 	
 	public static DruidPlugin createDruidPlugin() {
@@ -110,5 +121,11 @@ public class DemoConfig extends JFinalConfig {
 	 */
 	public void configHandler(Handlers me) {
 		
+	}
+	
+	public void beforeJFinalStop() {
+		LogKit.info("jfinal stop");
+		QuartzDynamicPlugin.delAll();
+		JFinal.stop();
 	}
 }

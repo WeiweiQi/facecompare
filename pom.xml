@@ -50,7 +50,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <!-- <scope>test</scope> -->
     </dependency>
     
     <dependency>
@@ -127,6 +127,30 @@
 		    <artifactId>quartz</artifactId>
 		    <version>2.3.1</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.jfinal/jfinal-ext -->
+		<dependency>
+		    <groupId>com.jfinal</groupId>
+		    <artifactId>jfinal-ext</artifactId>
+		    <version>3.1.4</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/cn.xsshome/taip -->
+		<dependency>
+		    <groupId>cn.xsshome</groupId>
+		    <artifactId>taip</artifactId>
+		    <version>4.3.5</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>1.2.61</version>
+		</dependency>
+
+		
+		
 		
 
 	

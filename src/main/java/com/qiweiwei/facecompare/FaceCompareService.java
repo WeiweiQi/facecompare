@@ -3,14 +3,13 @@ package com.qiweiwei.facecompare;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.demo.common.model.NetPics;
 import com.jfinal.kit.LogKit;
-import com.qiweiwei.util.image.ImageUtil;
+import com.qiweiwei.util.image.Face;
 import com.qiweiwei.util.jsoup.JsoupUtil;
 import com.qiweiwei.util.threadpool.MyThreadPool;
 
@@ -31,7 +30,7 @@ public class FaceCompareService {
 				NetPics pic = new NetPics();
 				pic.setStarname(element2.attr("alt"));
 				pic.setPicurl(element2.attr("src"));
-				String base64 = ImageUtil.base64Of(pic.getPicurl());
+				String base64 = Face.base64Of(pic.getPicurl());
 				pic.setBase64(base64);
 				pic.save();
 				MyThreadPool.getThreadExecutor(new Thread(() -> {
@@ -42,23 +41,27 @@ public class FaceCompareService {
 	}
 
 	private void updatePicBeauty(NetPics pic, String base64) {
-		JSONObject jsonObject = ImageUtil.getFacePointByBase64(base64);
-		System.out.println(jsonObject);
-		try {
-			String beauty = jsonObject.getJSONObject("result").getJSONArray("face_list").getJSONObject(0).get("beauty").toString();
-			int point = Integer.valueOf(beauty.split("\\.")[0]);
-			String genderType = jsonObject.getJSONObject("result").getJSONArray("face_list").getJSONObject(0).getJSONObject("gender").getString("type");
-			if ("female".equals(genderType)) {
-				pic.setGender(0);
-			} else if ("male".equals(genderType)) {
-				pic.setGender(1);
-			}
-			pic.setBeautifulpoint(point);
-			pic.setBeauty(beauty);
-			pic.update();
-		} catch (Exception e) {
-			LogKit.error("解析json出错：" + e.getMessage());
-		}
+//		String detectResult = Face.getFaceDetectByBase64(base64);
+//		LogKit.info("图片检测结果：" + detectResult);
+//		JSONObject jsonObject = JSONObject.parseObject(detectResult);
+//		
+//		try {
+//			JsonElement element = jsonObject.getAsJsonObject("result").getAsJsonArray("face_list").get(0);//..getJSONObject(0).get("beauty").toString();
+//			Record faceRecord = new Gson().fromJson(element, Record.class);
+//			String beauty = faceRecord.get("beauty").toString();
+//			int point = Integer.valueOf(beauty.split("\\.")[0]);
+//			String genderType = jsonObject.getJSONObject("result").getJSONArray("face_list").getJSONObject(0).getJSONObject("gender").getString("type");
+//			if ("female".equals(genderType)) {
+//				pic.setGender(0);
+//			} else if ("male".equals(genderType)) {
+//				pic.setGender(1);
+//			}
+//			pic.setBeautifulpoint(point);
+//			pic.setBeauty(beauty);
+//			pic.update();
+//		} catch (Exception e) {
+//			LogKit.error("解析json出错：" + e.getMessage());
+//		}
 	}
 	
 	public void initFacePoint() {

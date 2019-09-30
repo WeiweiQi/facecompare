@@ -11342,3 +11342,57 @@ org.json.JSONException: JSONObject["result"] not found.
 
 2019-09-30 01:04:07
 [ERROR]-[Thread: XNIO-1 task-1]-[com.jfinal.kit.LogKit.error()]: 解析json出错：JSONObject["result"] is not a JSONObject.
+
+2019-09-30 08:54:12
+[ERROR]-[Thread: main]-[com.jfinal.core.Config.startPlugins()]: Plugin start error: com.qiweiwei.util.quartz.QuartzDynamicPlugin. 
+resource /quartz_job.properties not found.
+java.lang.IllegalArgumentException: resource /quartz_job.properties not found.
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at com.google.common.io.Resources.getResource(Resources.java:197)
+	at com.jfinal.ext.kit.ResourceKit.readProperties(ResourceKit.java:30)
+	at com.qiweiwei.util.quartz.QuartzDynamicPlugin.loadJobsFromProperties(QuartzDynamicPlugin.java:146)
+	at com.qiweiwei.util.quartz.QuartzDynamicPlugin.start(QuartzDynamicPlugin.java:115)
+	at com.jfinal.core.Config.startPlugins(Config.java:128)
+	at com.jfinal.core.Config.configPluginWithOrder(Config.java:71)
+	at com.jfinal.core.Config.configJFinal(Config.java:59)
+	at com.jfinal.core.JFinal.init(JFinal.java:61)
+	at com.jfinal.core.JFinalFilter.init(JFinalFilter.java:63)
+	at io.undertow.servlet.core.LifecyleInterceptorInvocation.proceed(LifecyleInterceptorInvocation.java:111)
+	at io.undertow.servlet.core.ManagedFilter.createFilter(ManagedFilter.java:80)
+	at io.undertow.servlet.core.DeploymentManagerImpl$2.call(DeploymentManagerImpl.java:591)
+	at io.undertow.servlet.core.DeploymentManagerImpl$2.call(DeploymentManagerImpl.java:556)
+	at io.undertow.servlet.core.ServletRequestContextThreadSetupAction$1.call(ServletRequestContextThreadSetupAction.java:42)
+	at io.undertow.servlet.core.ContextClassLoaderSetupAction$1.call(ContextClassLoaderSetupAction.java:43)
+	at io.undertow.servlet.core.DeploymentManagerImpl.start(DeploymentManagerImpl.java:598)
+	at com.jfinal.server.undertow.UndertowServer.configHttp(UndertowServer.java:284)
+	at com.jfinal.server.undertow.UndertowServer.doStart(UndertowServer.java:262)
+	at com.jfinal.server.undertow.UndertowServer.start(UndertowServer.java:159)
+	at com.jfinal.server.undertow.UndertowServer.start(UndertowServer.java:84)
+	at com.demo.common.DemoConfig.main(DemoConfig.java:38)
+
+2019-09-30 08:56:59
+[ERROR]-[Thread: main]-[com.jfinal.core.Config.startPlugins()]: Plugin start error: com.qiweiwei.util.quartz.QuartzDynamicPlugin. 
+resource /quartz_job.properties not found.
+java.lang.IllegalArgumentException: resource /quartz_job.properties not found.
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)
+	at com.google.common.io.Resources.getResource(Resources.java:197)
+	at com.jfinal.ext.kit.ResourceKit.readProperties(ResourceKit.java:30)
+	at com.qiweiwei.util.quartz.QuartzDynamicPlugin.loadJobsFromProperties(QuartzDynamicPlugin.java:146)
+	at com.qiweiwei.util.quartz.QuartzDynamicPlugin.start(QuartzDynamicPlugin.java:115)
+	at com.jfinal.core.Config.startPlugins(Config.java:128)
+	at com.jfinal.core.Config.configPluginWithOrder(Config.java:71)
+	at com.jfinal.core.Config.configJFinal(Config.java:59)
+	at com.jfinal.core.JFinal.init(JFinal.java:61)
+	at com.jfinal.core.JFinalFilter.init(JFinalFilter.java:63)
+	at io.undertow.servlet.core.LifecyleInterceptorInvocation.proceed(LifecyleInterceptorInvocation.java:111)
+	at io.undertow.servlet.core.ManagedFilter.createFilter(ManagedFilter.java:80)
+	at io.undertow.servlet.core.DeploymentManagerImpl$2.call(DeploymentManagerImpl.java:591)
+	at io.undertow.servlet.core.DeploymentManagerImpl$2.call(DeploymentManagerImpl.java:556)
+	at io.undertow.servlet.core.ServletRequestContextThreadSetupAction$1.call(ServletRequestContextThreadSetupAction.java:42)
+	at io.undertow.servlet.core.ContextClassLoaderSetupAction$1.call(ContextClassLoaderSetupAction.java:43)
+	at io.undertow.servlet.core.DeploymentManagerImpl.start(DeploymentManagerImpl.java:598)
+	at com.jfinal.server.undertow.UndertowServer.configHttp(UndertowServer.java:284)
+	at com.jfinal.server.undertow.UndertowServer.doStart(UndertowServer.java:262)
+	at com.jfinal.server.undertow.UndertowServer.start(UndertowServer.java:159)
+	at com.jfinal.server.undertow.UndertowServer.start(UndertowServer.java:84)
+	at com.demo.common.DemoConfig.main(DemoConfig.java:38)
