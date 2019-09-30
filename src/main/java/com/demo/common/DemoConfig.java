@@ -85,6 +85,26 @@ public class DemoConfig extends JFinalConfig {
 	 * 配置插件
 	 */
 	public void configPlugin(Plugins me) {
+		if (p.getBoolean("opendatabase", true)) {
+			addDataBasePlugins(me);
+		}
+		
+		if (p.getBoolean("openquartz", false)) {
+			addQuartzPlugins(me);
+		}
+		
+	}
+
+	private void addQuartzPlugins(Plugins me) {
+		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		me.add(quartzPlugin);
+		
+		//动态定时任务插件
+		QuartzDynamicPlugin quartzDynamicPlugin = new QuartzDynamicPlugin();
+		me.add(quartzDynamicPlugin);
+	}
+
+	private void addDataBasePlugins(Plugins me) {
 		// 配置 druid 数据库连接池插件
 		DruidPlugin druidPlugin = new DruidPlugin(p.get("jdbcUrl"), p.get("user"), p.get("password").trim());
 		me.add(druidPlugin);
@@ -94,13 +114,6 @@ public class DemoConfig extends JFinalConfig {
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
 		me.add(arp);
-		
-		QuartzPlugin quartzPlugin = new QuartzPlugin();
-		me.add(quartzPlugin);
-		
-		//动态定时任务插件
-		QuartzDynamicPlugin quartzDynamicPlugin = new QuartzDynamicPlugin();
-		me.add(quartzDynamicPlugin);
 	}
 	
 	public static DruidPlugin createDruidPlugin() {
@@ -126,6 +139,5 @@ public class DemoConfig extends JFinalConfig {
 	public void beforeJFinalStop() {
 		LogKit.info("jfinal stop");
 		QuartzDynamicPlugin.delAll();
-		JFinal.stop();
 	}
 }

@@ -10,14 +10,31 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import com.jfinal.kit.LogKit;
+import com.jfinal.kit.PropKit;
 
 public interface Face {
 	
 	static final String UNKNOWN_IMAGE_BASE64 = "unknown";
 	
+	static final String PLAT_FORM = PropKit.get("platform", "BAIDU");
+	
 	public abstract String detectByBase64(String base64);
 	public abstract String getBeauty(String detectResult);
-	public abstract String getGender(String detectResult);
+	/**
+	 * @param detectResult
+	 * @return 性别,0-女，1-男
+	 */
+	public abstract int getGender(String detectResult);
+	
+	public default Face getFace() {
+		if ("BAIDU".equals(PLAT_FORM)) {
+			return new BFace();
+		} else if ("TENCENT".equals(PLAT_FORM)) {
+			return new TFace();
+		} else {
+			throw new IllegalArgumentException("未定义的脸部检测接口");
+		}
+	}
 	
 	public static String base64Of(String url) {
 		try (InputStream is = new URL(url).openStream()){

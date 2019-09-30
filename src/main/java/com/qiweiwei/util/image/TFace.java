@@ -2,6 +2,7 @@ package com.qiweiwei.util.image;
 
 import java.util.Base64;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PropKit;
 
@@ -13,23 +14,23 @@ public class TFace implements Face{
 	private static final String TENCENT_APP_KEY = PropKit.get("tencent_app_key");
 	
 	
-
 	@Override
 	public String detectByBase64(String base64) {
-		return getTencentDetectResult(base64);
+		String result = getTencentDetectResult(base64);
+		return result;
 	}
 
 	@Override
 	public String getBeauty(String detectResult) {
-		//TODO 
-		
-		return null;
+		JSONObject jsonObject = JSONObject.parseObject(detectResult);
+		return jsonObject.getJSONObject("data").getJSONArray("face_list").getJSONObject(0).get("beauty").toString();
 	}
 
 	@Override
-	public String getGender(String detectResult) {
-		// TODO Auto-generated method stub
-		return null;
+	public int getGender(String detectResult) {
+		JSONObject jsonObject = JSONObject.parseObject(detectResult);
+		int genderNumber = jsonObject.getJSONObject("data").getJSONArray("face_list").getJSONObject(0).getIntValue("gender");
+		return genderNumber <= 50 ? 0 : 1;
 	}
 	
 	private static TAipFace getTencentAipFace() {

@@ -32,9 +32,14 @@ public class BFace implements Face {
 	}
 
 	@Override
-	public String getGender(String detectResult) {
+	public int getGender(String detectResult) {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(detectResult);
-		return jsonObject.getJSONObject("result").getJSONArray("face_list").getJSONObject(0).getJSONObject("gender").getString("type");
+		String gender = jsonObject.getJSONObject("result").getJSONArray("face_list").getJSONObject(0).getJSONObject("gender").getString("type");
+		if ("female".equals(gender)) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 	
 	
